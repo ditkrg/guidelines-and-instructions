@@ -71,6 +71,8 @@ These configurations must be properly documented in two ways:
 
 Unless these documents are submitted, the code is not **accepted** and **delivery** is not complete. 
 
+The documentations, as well as the code base, must not include any **secrets**. 
+
 As for naming convention, the following format must be used:
 
 1. Group environment variable configurations by appending double underdashes (__). For instance, this is how database-related environment variables can be grouped:
