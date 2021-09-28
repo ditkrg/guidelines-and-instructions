@@ -109,9 +109,9 @@ As for naming convention, the following format must be used:
 
    ```json
    {
-   	"MONGODB": {
-   		"REPLICA_URL": ['', '', '']
-   	}
+     "MONGODB": {
+       "REPLICA_URL": ["", "", ""]
+     }
    }
    ```
 
