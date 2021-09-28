@@ -73,29 +73,51 @@ Unless these documents are submitted, the code is not **accepted** and **deliver
 
 As for naming convention, the following format must be used:
 
-Group environment variable configurations by appending double underdashes (__). For instance, this is how database-related environment variables can be grouped:
+1. Group environment variable configurations by appending double underdashes (__). For instance, this is how database-related environment variables can be grouped:
 
-```bash
-DB__CONNECTION=
-DB__USERNAME=
-DB__PASSWORD=
-DB__DBNAME=
-```
+   ```bash
+   DB__CONNECTION=
+   DB__USERNAME=
+   DB__PASSWORD=
+   DB__DBNAME=
+   ```
 
-Think of this structure as JSON Object keys: 
+   Think of this structure as JSON Object keys: 
 
-```json
-{
-  DB: {
-    CONNECTION: "",
-    USERNAME: "",
-    PASSWORD: "",
-    DBNAME: ""
-  }
-}
-```
+   ```json
+   {
+     "DB": {
+       "CONNECTION": "",
+       "USERNAME": "",
+       "PASSWORD": "",
+       "DBNAME": ""
+     }
+   }
+   ```
 
-Follow the same pattern if you would like to nested objects deeper. 
+   Follow the same pattern if you would like to nested objects deeper. 
+
+2. If you environment variable is an array, append the two underdashes and the index of the position to the name. For example, consider this case: 
+
+   ```bash
+   MONGODB__REPLICA_URL__0=
+   MONGODB__REPLICA_URL__1=
+   MONGODB__REPLICA_URL__2=
+   ```
+
+   This is equivalent to the following JSON Object structure: 
+
+   ```json
+   {
+   	"MONGODB": {
+   		"REPLICA_URL": ['', '', '']
+   	}
+   }
+   ```
+
+   
+
+3. 
 
 
 
