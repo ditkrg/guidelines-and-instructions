@@ -180,7 +180,7 @@ In case of command line applications, an option must be provided (suggestion –
 
 
 
-#### **Option #2 (Beta): The Vetaran**
+#### **Option #2 (Beta): The Veteran**
 
 1. PHP (version >= 7)
 2. Laravel (version >= 7)
