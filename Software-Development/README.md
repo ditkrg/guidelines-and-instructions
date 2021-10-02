@@ -173,6 +173,10 @@ In case of command line applications, an option must be provided (suggestion –
 
 
 
+### Version Control and Repository Management
+
+
+
 ## Distributed Computing Specifications
 
 The guides below aim to clarify principles and design decisions when creating distributed systems. Whether the software you are building is distributed or centralized, it is important to follow the points mentioned in this sections. This will make sure that any centralized software can later be transformed into a distributed system without much headache.
@@ -192,7 +196,7 @@ All software at DIT is deployed using Docker and will be running on Kubernetes. 
 
 #### Dockerfile
 
-The Dockerfile is a standard file that gives out instruction on how to build an image for the source code. Different technology stacks have different base images on the top of which the new image is built. DIT has a local registry for all needed images. The base images used in this Dockerfile must be coming from our local registry. If the on-prem registry does not contain the base images that you need, speak to the Head of DevOps so that they are made available. If it is absolutely necessary to use an image that for some reasons cannot be hosted on our local registry, speak to the Head of DevOps to obtain approval. Otherwise, the change is considered a bug. 
+The Dockerfile is a standard file that gives out instruction on how to build an image for the source code. Diffberent technology stacks have different base images on the top of which the new image is built. DIT has a local registry for all needed images. The base images used in this Dockerfile must be coming from our local registry. If the on-prem registry does not contain the base images that you need, speak to the Head of DevOps so that they are made available. If it is absolutely necessary to use an image that for some reasons cannot be hosted on our local registry, speak to the Head of DevOps to obtain approval. Otherwise, the change is considered a bug. 
 
 
 
@@ -232,6 +236,10 @@ ENV BUNDLER_VERSION=2.2.17
 
 
 We also recommend reading the official [Best practices for writing Dockerfiles](https://docs.docker.com/develop/develop-images/dockerfile_best-practices/).
+
+
+
+
 
 
 
