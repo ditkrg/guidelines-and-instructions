@@ -170,3 +170,72 @@ All web applications must be versioned appropriately and conform to the rules of
 #### CLI Applications
 
 In case of command line applications, an option must be provided (suggestion –v) to display the version.
+
+
+
+## Distributed Computing Specifications
+
+The guides below aim to clarify principles and design decisions when creating distributed systems. Whether the software you are building is distributed or centralized, it is important to follow the points mentioned in this sections. This will make sure that any centralized software can later be transformed into a distributed system without much headache.
+
+If it is absolutely necessary to avoid conforming to the principles of this section, communicate the matter with the Head of Digital Development to obtain an approval. Otherwise, conformity to this section is mandatory. 
+
+
+
+### Deployment Strategy
+
+All software at DIT is deployed using Docker and will be running on Kubernetes. That being said, each piece of software must contain these valid documents:
+
+1. Dockerfile: Specifies instructions of how to build the docker image for the software. 
+2. .dockerignore: Specifies which files must be ignored when building the docker image.
+
+
+
+#### Dockerfile
+
+The Dockerfile is a standard file that gives out instruction on how to build an image for the source code. Different technology stacks have different base images on the top of which the new image is built. DIT has a local registry for all needed images. The base images used in this Dockerfile must be coming from our local registry. If the on-prem registry does not contain the base images that you need, speak to the Head of DevOps so that they are made available. If it is absolutely necessary to use an image that for some reasons cannot be hosted on our local registry, speak to the Head of DevOps to obtain approval. Otherwise, the change is considered a bug. 
+
+
+
+##### Docker Layer Caching 
+
+Docker creates container images using layers. Each command that is found in a `Dockerfile` creates a new layer. Each layers contains the filesystem changes of the image between the state before the execution of the command and the state after the execution of the command.
+
+Docker uses a layer cache to optimize the process of building Docker images and make it faster.
+
+Docker Layer Caching mainly works on `RUN`, `COPY` and `ADD` commands.
+
+Image layers in the Dockerfile must be properly cached and necessary techniques to invalidate the cache must be put in place. Here is an example of how caching the layers could be achieved:
+
+
+
+```dockerfile
+FROM reg.dev.krd/phusion/passenger-full:1.0.14 AS base
+
+ENV HOME /root
+CMD ["/sbin/my_init"]
+
+ADD nginx.conf /etc/nginx/sites-enabled/webapp.conf
+RUN rm -f /etc/service/nginx/down
+RUN rm /etc/nginx/sites-enabled/default
+RUN mkdir /home/app/webapp
+RUN nginx -t 
+
+
+RUN apt-get update -qq && apt-get install -y postgresql-client
+RUN gem install bundler -v 2.2.17
+
+FROM base as installation
+
+ENV BUNDLER_VERSION=2.2.17
+```
+
+
+
+We also recommend reading the official [Best practices for writing Dockerfiles](https://docs.docker.com/develop/develop-images/dockerfile_best-practices/).
+
+
+
+
+
+## Software Architecture Design and Non-functional Requirements
+
