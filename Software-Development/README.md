@@ -135,9 +135,25 @@ Unless otherwise specified by the Head of Digital Development, the following doc
 
 
 
+### Consistency
+
+Applications must be built in a consistent manner from the perspective of the end-user. In case if the need of an inconsistent behavior may arise, it must be properly communicated by the Head of Software Development Team for an approval. Unapproved inconsistencies are not accepted. This must also be respected when adding new features, making changes and improvements, or fixing bugs to existing applications. 
+
+
+
+### Compatibility
+
+All software must be backward-compatible by default and must take previous versions into considerations. If this not possible or for some design reasons need to change, an approval from the Head of Digital Development Team must be obtained. Unapproved changes that do not adhere to this principle will be considered a bug.
+
 ### Acceptance
 
 ### Deadlines
+
+All agreed deadlines must be kept as they are unless it is specified or extended explicitly by the Head of Digital Development Team. <u>Members of the Digital Development Team</u> are not obligated to accommodate for requests for late-term changes in the requirements. 
+
+In case if priorities change and the agreed deadlines cannot be met, it must be properly communicated to the Head of Digital Development Team in order to come up with a new agreement. 
+
+Each release development must come with a time plan that is approved by the Head of Digital Development Team.
 
 ### Versioning
 
@@ -154,4 +170,3 @@ All web applications must be versioned appropriately and conform to the rules of
 #### CLI Applications
 
 In case of command line applications, an option must be provided (suggestion –v) to display the version.
-
