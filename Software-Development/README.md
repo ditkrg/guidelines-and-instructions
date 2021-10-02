@@ -219,6 +219,17 @@ Below is an overview of the policies:
 
 #### GitHub
 
+All repositories must be hosted on the [KRG's main GitHub organization](https://github.com/ditkrg). All members of the Digital Development Team and the DevOps Team are eligible to receive a free seat on the organization. Contractors' collaborators must be added as external collaborators. 
+
+All members of the organization are required to use:
+
+1. SSH Keys for authentication.
+2. GPG to sign their commits. 
+
+Unverified/unsigned commits are not going to be allowed. 
+
+Please refer to [this guide](https://docs.github.com/en/authentication/managing-commit-signature-verification) to setup GPG keys. 
+
 ## Distributed Computing Specifications
 
 The guides below aim to clarify principles and design decisions when creating distributed systems. Whether the software you are building is distributed or centralized, it is important to follow the points mentioned in this sections. This will make sure that any centralized software can later be transformed into a distributed system without much headache.
