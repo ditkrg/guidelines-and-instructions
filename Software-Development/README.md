@@ -296,15 +296,76 @@ We also recommend reading the official [Best practices for writing Dockerfiles](
 
 ### Race Condition
 
+Race condition is the situation where certain behavior of a system is controlled by the sequence or the timing of events; hence resulting in unintended consequences that are typically considered to be a bug. 
+
 #### Concurrency
 
-##### Optimistic Concurrency
+The primary enabler of distributed systems are concurrency and it is usually its primary headache. When creating concurrent applications, the developer must be careful with the design of that application so that it does not run into race condition as described above. This means that application designs in concurrent situations must calculate for sequence and timing properly using certain techniques, and even strategies. These include thread-safe practices, atomic operations, locking (if required).
 
-#### Application Architecture Design
+##### Optimistic Concurrency Control (OCC)
 
-#### Database Design
+A very common malpractice in distributed systems that ignores race conditions is the 'check-then-act' method. In light of this, two concurrent processes may try to perform an operation, but before doing so, they must check if a certain condition is met. Unbeknown to each other, both processes check and meet the condition; therefore they act. In between these checks and the act, and due to a timing issue, another process may alter the condition, unbeknown to the previous processes. Thus, resulting in a situation where the condition is not met, but the act is performed. 
+
+Optimistic Concurrency Control resolves this by removing the check in 'check-then-act'. It rather assumes that multiple transactions can be safely performed without locking the resources. In case if two processes try to modify the same resource, the processes acts without checking pre-conditions but must check the version of the resource and rollback if it has indeed changed. 
+
+We highly encourage considering Optimistic Concurrency Control over Pessimistic Concurrency Control (PCC) as much as possible as the implementation complexity of the later almost often beats its advantages. If the use of PCC is absolutely necessary, speak to the Head of Digital Development to obtain approval.
+
+#### Application Decisions
+
+##### Be Careful with Class Variables
+
+Be careful with using class variable for checking a condition in threaded environments and resort to instance attributes to do so. Consider the following case:
+
+```ruby
+def update_without_logging(resource_id)
+  Audit.disable_logging
+  
+  @resource = Audit.find(resource_id)
+  @resource.update(some_field: 'some value')
+
+  Audit.enable_logging
+end
+```
+
+
+
+This design will eventually fall for race conditions since some other requests may be processed on the same instance of the application while `Audit.disable_logging`, which is unintended. This happens because class variables are static and are not subjected to garbage collection. The effect of this action will be extended to any other instance of the class `Audit` that is outside of the scope of the method `update_without_logging`.
+
+To resolve this, use an instance variable:
+
+```ruby
+def update_without_logging(resource_id)
+  @resource = Audit.find(resource_id)
+  @resource.disable_logging
+  @resource.update(some_field: 'some value')
+end
+```
+
+
+
+#### Database Decisions
+
+##### Uniqueness
+
+Always place a unique index on columns are that supposed to contain unique values. This goes hand in hand with the previously described situations of race conditions. Applications that only check uniqueness on application level through 'check-then-act' will fall victim to race conditions and end up having inconsistent, non-unique data that is assumed to be valid. 
+
+##### Versioning
+
+It is always a good practice to version records so that is can also comply with the Optimistic Concurrency Control model. This requirement is not forced but it is highly recommended. 
+
+The version column must be atomically incremented. 
 
 #### Message Brokers
+
+When using message brokers for inter-services communications, it is worth considering situations that would result in messages that could be consumed multiple times. To resolve this, it is generally suggested to use the [Competing Consumers Pattern](https://docs.microsoft.com/en-us/azure/architecture/patterns/competing-consumers). This will make sure that messages coming from a message broker is consumed once, by design. 
+
+##### RabbitMQ 
+
+Using RabbitMQ's queues is considered to be a safe option by itself as it achieves the Competing Consumers Pattern out of the box. 
+
+##### Kafka
+
+When using Kafka as a message broker, make sure that consumers of the same application receive the same consumer-group-id so that only one instance of the consumers can receive the message, as opposed to all of them. 
 
 
 
