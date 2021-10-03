@@ -334,7 +334,7 @@ Race condition is the situation where certain behavior of a system is controlled
 
 #### Concurrency
 
-The primary enabler of distributed systems are concurrency and it is usually its primary headache. When creating concurrent applications, the developer must be careful with the design of that application so that it does not run into race condition as described above. This means that application designs in concurrent situations must calculate for sequence and timing properly using certain techniques, and even strategies. These include thread-safe practices, atomic operations, locking (if required).
+The primary enabler of distributed systems is concurrency and it is usually its primary headache. When creating concurrent applications, the developer must be careful with the design of that application so that it does not run into race condition as described above. This means that application designs in concurrent situations must calculate for sequence and timing properly using certain techniques, and even strategies. These include thread-safe practices, atomic operations, locking (if required).
 
 ##### Optimistic Concurrency Control (OCC)
 
