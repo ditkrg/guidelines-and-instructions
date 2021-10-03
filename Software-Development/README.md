@@ -375,6 +375,8 @@ When using Kafka as a message broker, make sure that consumers of the same appli
 
 ## Software Application Specifications
 
+### Authentication
+
 ### API Documentations
 
 ### Internationalization and Localization
