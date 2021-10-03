@@ -145,7 +145,11 @@ Applications must be built in a consistent manner from the perspective of the en
 
 All software must be backward-compatible by default and must take previous versions into considerations. If this not possible or for some design reasons need to change, an approval from the Head of Digital Development Team must be obtained. Unapproved changes that do not adhere to this principle will be considered a bug.
 
+
+
 ### Acceptance
+
+
 
 ### Deadlines
 
@@ -154,6 +158,8 @@ All agreed deadlines must be kept as they are unless it is specified or extended
 In case if priorities change and the agreed deadlines cannot be met, it must be properly communicated to the Head of Digital Development Team in order to come up with a new agreement. 
 
 Each release development must come with a time plan that is approved by the Head of Digital Development Team.
+
+
 
 ### Versioning
 
@@ -216,6 +222,8 @@ Below is an overview of the policies:
 | staging                  | Authorized by Head of Digital Development or DevOps  <br />Team Leads | No review required                        |
 | pre-prod                 | Authorized by Head of Digital Development or DevOps          | At least 1 review by Head of DD or DevOps |
 | main                     | Only Head of DevOps                                          | At least 1 review by Head of DD           |
+
+##### Secrets
 
 #### GitHub
 
@@ -294,6 +302,32 @@ We also recommend reading the official [Best practices for writing Dockerfiles](
 
 ### Statelessness
 
+Distributed applications must maintain statelessness all during its life cycle. This is a founding principle of all distributed systems. 
+
+#### HTTP
+
+By nature, HTTP is a stateless protocol. This means that the server that receives the HTTP requests blindly serve the request and does not associate requests with any previous information. There is no special treatment for different requests, unless the server does this explicitly through attaching some state to incoming requests, usually through sessions. We will elaborate this in the upcoming sections. 
+
+#### Sessions
+
+Application server sessions are stateful. They do attach some sort of a meaning to each request, which in turn instructs the server to treat HTTP requests differently. This is a clear violation of the statelessness principle of HTTP. We encourage you to move away from sessions that are stored on the corresponding server. 
+
+In a distributed system where multiple instances of the same application are running to serve requests, HTTP requests that are forwarded to these instances are never guaranteed to arrive at the same instance. Therefore, a request that has initially arrived at Instance #1, may later arrive at Instance #2. If server sessions are involved, this will be problematic as the session data on Instance #1 does not exist on Instance #2, resulting in a state contention. 
+
+The solution to this is either: 
+
+1. Store session information in an external data store such as Redis so that it is accessible by all instances.
+2. Use sticky sessions.
+3. Avoid using server sessions.
+
+We highly encourage you to use Solution #1. 
+
+When using sticky sessions, please speak to the Head of DevOps to obtain approval on the implementation details.
+
+#### Storage
+
+In a distributed system, files must not be stored locally on the host machine. Rather, a storage service must be used. DIT provides a on-prem, S3-compatible blob storage service. Please speak to the Head of DevOps to obtain the necessary information in this regard.
+
 ### Race Condition
 
 Race condition is the situation where certain behavior of a system is controlled by the sequence or the timing of events; hence resulting in unintended consequences that are typically considered to be a bug. 
@@ -341,8 +375,6 @@ def update_without_logging(resource_id)
 end
 ```
 
-
-
 #### Database Decisions
 
 ##### Uniqueness
@@ -367,9 +399,144 @@ Using RabbitMQ's queues is considered to be a safe option by itself as it achiev
 
 When using Kafka as a message broker, make sure that consumers of the same application receive the same consumer-group-id so that only one instance of the consumers can receive the message, as opposed to all of them. 
 
+### DevOps Requirements
+
+#### Health Check
+
+All web application are required to provide a `GET /health` endpoint that will return a `200` HTTP Response Code if: 
+
+1. The application was bootstrapped successful and
+2. Necessary connections to different data sources can be established and
+3. Connection to depending services can be established
+
+If these conditions cannot be met, the endpoint must return a `503` HTTP Response Code. 
+
+#### Status 
+
+All web application are required to provide a `GET /status` endpoint with a similar response schema and a `200` HTTP Response Code: 
+
+```json
+{
+    "name": {
+        "type": "string",
+        "description": "The application name"
+    },
+    "version": {
+        "type": "string",
+        "description": "The version of the application"
+    },
+    "startTime": {
+        "type": "string",
+        "format": "date-time",
+        "description": "The start time when the application was successfully booted"
+    },
+    "host": {
+        "type": "string",
+        "description": "The name of the host machine on which the application is running"
+    }
+}
+```
 
 
-## Software Architecture Design and Non-functional Requirements
+
+## Software Application Specifications
+
+### Authentication
+
+Unless specified explicitly per project, all applications that need to use an authentication scheme, must use DIT's Central Authentication Service (CAS) for that purpose. 
+
+#### URLs
+
+Use `https://auth.dev.krd` in `dev`, `staging`, and `pre-prod` environment. 
+
+Use `https://account.id.krd` in production environment. 
+
+#### OpenID Connect
+
+The CAS is an OpenID Connect-compatible service. It strictly follows the specifications of OpenID Connect to perform authentication. 
+
+##### Discovery
+
+It provides a discovery endpoint for dynamic information discovery at the endpoint `/.well-known/openid-configuration`
+
+#### OAuth 2.0
+
+The CAS is an OAuth 2.0-compatible service. It strictly follows the specifications of OAuth 2.0 to perform authorization.
+
+##### Flows
+
+Among the different authorization flows supported by our CAS, we only permit the followings to be used:
+
+* Authorization Code with PKCE
+* Implicit 
+* Client Credentials
+
+###### Authorization Code with PCKE 
+
+When using this flow, we prohibit access tokens to be stored on the client-side due to security concerns. All access tokens, refresh tokens, and ID tokens must be concealed and be kept from the browser or any other client that is prone to exposure. 
+
+For that, we follow the Backend for Frontends Pattern to safely store access tokens. Take a look at our [Backend for Frontends](https://github.com/ditkrg/Backend-for-Frontends-Template) implementation, which we mainly use for this flow. 
+
+If you are about to use this flow, speak to the Head of Digital Development and DevOps to set the Backend for Frontends according to your needs. Otherwise, it is considered to be an application bug.
+
+#### Authentication Strategy
+
+When using the CAS for authentication, the method through which authentication is ensured is the validation of access tokens that is received in a Authorization Bearer header. 
+
+Access tokens from the CAS are JWTs.
+
+When validating the access token, it is important to check:
+
+1. `iss` claim: the Issuer, which corresponds to the URLs in this section. 
+2. `exp` claim: the expiration of the token. Only valid tokens must be allowed.
+3. `aud` claim: the audience. This corresponds to the name of the your application as a protected resource in the CAS.
+4. `alg`: the algorithm, which must be `RS256`.
+5. `kid`: which is the key with which the token is signed. For this, you will need to use the JWKS endpoint (refer to Discovery in this section) to verify the public key. 
+
+#### User On-boarding
+
+Most applications are generally designed to deal with end-users. This means that beyond authentication strategies, applications must store user information to some extent. Since all users are centrally registered in the CAS, applications that use the CAS will delegate registration and authentication to it. Accordingly, applications will need a way to make sure that only specified users can access the given applications. Apparently, not all users registered in the CAS can access all applications that utilize the CAS. 
+
+##### CAS API
+
+For that, applications may request to search in the CAS in order to on-board users to their system using the CAS API.
+
+###### URLs
+
+Use `https://api.auth.dev.krd` in `dev`, `staging`, and `pre-prod` environment. 
+
+Use `https://api.account.id.krd` in production environment. 
+
+###### Authentication Flow
+
+To authenticate your application to use the CAS API, use a `client credentials` flow with a Client ID and a Client Secret. Request a development Client ID & Secret from the Head of DevOps. 
+
+###### Required Scopes
+
+To use the CAS API for user on-boarding, two scopes are required:
+
+* adminui-api-wrapper
+* adminui-api-wrapper.users.search
+
+###### Endpoints
+
+Once you have a valid access token, you can send the token as a Authorization Bearer header. [Checkout the Swagger Documentations of the CAS API](http://api.auth.dev.krd/swagger)
+
+### API Documentations
+
+We expected all APIs to be documented using Swagger OpenAPI Version 3+.
+
+### Internationalization and Localization
+
+### Automated Testing
+
+### Monitoring and Error Tracking
+
+### Logging
+
+### Pagination
+
+### Idempotent Requests
 
 ## Accepted Technologies and Development Stacks 
 
