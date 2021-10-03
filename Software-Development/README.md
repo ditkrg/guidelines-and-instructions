@@ -369,7 +369,19 @@ When using Kafka as a message broker, make sure that consumers of the same appli
 
 
 
-## Software Architecture Design and Non-functional Requirements
+## Software Application Specifications
+
+### API Documentations
+
+### Internationalization and Localization
+
+### Automated Testing
+
+### Monitoring and Error Tracking
+
+### Logging
+
+### Pagination
 
 ## Accepted Technologies and Development Stacks 
 
