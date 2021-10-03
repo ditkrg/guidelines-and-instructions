@@ -371,9 +371,9 @@ When using Kafka as a message broker, make sure that consumers of the same appli
 
 ## Software Architecture Design and Non-functional Requirements
 
-## Software Applications Specifications
+## Accepted Technologies and Development Stacks 
 
-### Accepted Technologies and Development Stacks 
+### Software Development Stacks
 
 #### Option #1 (Alpha): The Overnight Master****
 
