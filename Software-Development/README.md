@@ -195,7 +195,7 @@ All code bases must have a branch that corresponds to a major version. For examp
 
 The order from which branches are merged generally takes the following form:
 
-`major version branch` -> `dev` -> `staging` -> `staging` -> `pre-prod` -> `main`
+`major version branch` -> `dev` -> `staging` -> `pre-prod` -> `main`
 
 An example:
 
