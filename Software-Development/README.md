@@ -367,7 +367,11 @@ Using RabbitMQ's queues is considered to be a safe option by itself as it achiev
 
 When using Kafka as a message broker, make sure that consumers of the same application receive the same consumer-group-id so that only one instance of the consumers can receive the message, as opposed to all of them. 
 
+### DevOps Requirements
 
+#### Health Check
+
+#### Status 
 
 ## Software Application Specifications
 
