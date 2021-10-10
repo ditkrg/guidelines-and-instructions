@@ -19,7 +19,7 @@
 
 | Reviewer             | Date of Review   |
 | -------------------- | ---------------- |
-| [Reviewer Name Here] | [Date of Review] |
+| Shkar T. Noori | October 10, 2021 |
 
 
 
@@ -189,7 +189,7 @@ All software code bases must have a branch named `main` that acts as the default
 
 ##### Branching
 
-Conventionally, each code base must also have a branch that corresponds to an identical deployment environment. For example, the branch `dev` corresponds to codes running in an `dev` environment, `staging` to `staging`, `pre-prod` to `pre-prod`, and `main` to`production`. 
+Conventionally, each code base must also have a branch that corresponds to an identical deployment environment. For example, the branch `dev` corresponds to codes running in a `dev` environment, `staging` to `staging`, `pre-prod` to `pre-prod`, and `main` to `production`. 
 
 All code bases must have a branch that corresponds to a major version. For example branch `v1.x.x` must contain all initial codes. The next major release must also get its own branch `v2.x.x` which is typically created off `main`.  (Edge cases must be explicitly authorized by the Head of Digital Development or DevOps). 
 
@@ -211,7 +211,7 @@ From `main` create `v2.x.x` -> `dev` -> `staging` -> `pre-prod` -> `main`
 
 ##### Merging and Pushing
 
-All developers are free to push to the release branch and `dev` whenever they would like to. However, pushing to any branch other branch requires a Pull Request that needs review and approval. 
+All developers are free to push to the release branch and `dev` whenever they would like to. However, pushing to any other branch requires a Pull Request that needs review and approval. 
 
 Below is an overview of the policies:
 
@@ -248,7 +248,7 @@ If it is absolutely necessary to avoid conforming to the principles of this sect
 
 ### Deployment Strategy
 
-All software at DIT is deployed using Docker and will be running on Kubernetes. That being said, each piece of software must contain these valid documents:
+All software at DIT is packaged using Docker and will be running on Kubernetes. That being said, each piece of software must contain these valid documents:
 
 1. Dockerfile: Specifies instructions of how to build the docker image for the software. 
 2. .dockerignore: Specifies which files must be ignored when building the docker image.
@@ -259,7 +259,7 @@ All software at DIT is deployed using Docker and will be running on Kubernetes. 
 
 The Dockerfile is a standard file that gives out instruction on how to build an image for the source code. Diffberent technology stacks have different base images on the top of which the new image is built. DIT has a local registry for all needed images. The base images used in this Dockerfile must be coming from our local registry. If the on-prem registry does not contain the base images that you need, speak to the Head of DevOps so that they are made available. If it is absolutely necessary to use an image that for some reasons cannot be hosted on our local registry, speak to the Head of DevOps to obtain approval. Otherwise, the change is considered a bug. 
 
-
+See also: [Dockerfile reference](https://docs.docker.com/engine/reference/builder/)
 
 ##### Docker Layer Caching 
 
@@ -272,7 +272,7 @@ Docker Layer Caching mainly works on `RUN`, `COPY` and `ADD` commands.
 Image layers in the Dockerfile must be properly cached and necessary techniques to invalidate the cache must be put in place. Here is an example of how caching the layers could be achieved:
 
 
-
+# TODO: Simplify dockerfile
 ```dockerfile
 FROM reg.dev.krd/phusion/passenger-full:1.0.14 AS base
 
@@ -326,7 +326,14 @@ When using sticky sessions, please speak to the Head of DevOps to obtain approva
 
 #### Storage
 
-In a distributed system, files must not be stored locally on the host machine. Rather, a storage service must be used. DIT provides a on-prem, S3-compatible blob storage service. Please speak to the Head of DevOps to obtain the necessary information in this regard.
+In a distributed system, files must not be stored locally on the host machine. Rather, a storage service must be used. 
+
+The supported storage services:
+1. DIT provides an on-prem, S3-compatible blob storage service. 
+2. Persistent volumes can be attached to running containers (Only When Required).
+
+Please speak to the Head of DevOps to obtain the necessary information in this regard.
+
 
 ### Race Condition
 
