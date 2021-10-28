@@ -437,6 +437,16 @@ All web application are required to provide a `GET /status` endpoint with a simi
 }
 ```
 
+Example:
+```json
+{
+   "name":"simple-api",
+   "version":"0.1.0",
+   "startTime":"2021-10-28T14:49:08.06+00:00",
+   "host":"simple-api-deployment-c99cdcfdf-xrfh4"
+}
+```
+
 
 
 ## Software Application Specifications
