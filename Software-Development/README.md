@@ -272,32 +272,25 @@ Docker Layer Caching mainly works on `RUN`, `COPY` and `ADD` commands.
 Image layers in the Dockerfile must be properly cached and necessary techniques to invalidate the cache must be put in place. Here is an example of how caching the layers could be achieved:
 
 
-# TODO: Simplify dockerfile
 ```dockerfile
-FROM reg.dev.krd/phusion/passenger-full:1.0.14 AS base
+FROM reg.dev.krd/library/ubuntu:20.04 AS base
 
-ENV HOME /root
-CMD ["/sbin/my_init"]
-
-ADD nginx.conf /etc/nginx/sites-enabled/webapp.conf
-RUN rm -f /etc/service/nginx/down
-RUN rm /etc/nginx/sites-enabled/default
-RUN mkdir /home/app/webapp
-RUN nginx -t 
-
-
+COPY file.txt /target.txt
 RUN apt-get update -qq && apt-get install -y postgresql-client
-RUN gem install bundler -v 2.2.17
-
-FROM base as installation
-
-ENV BUNDLER_VERSION=2.2.17
 ```
 
+In this example, when building the dockerfile, any changes to the `file.txt` will result in reinstalling the dependencies; which is most likely not what we want. we can fix that by simply moving the copy command below the run command:
 
+```dockerfile
+FROM reg.dev.krd/library/ubuntu:20.04 AS base
+
+RUN apt-get update -qq && apt-get install -y postgresql-client
+COPY file.txt /target.txt
+```
+
+This way, even when we make changes to the `file.txt`, we do not have to reinstall the dependencies.
 
 We also recommend reading the official [Best practices for writing Dockerfiles](https://docs.docker.com/develop/develop-images/dockerfile_best-practices/).
-
 
 
 ### Statelessness
