@@ -457,9 +457,9 @@ Unless specified explicitly per project, all applications that need to use an au
 
 #### URLs
 
-Use `https://auth.dev.krd` in `dev`, `staging`, and `pre-prod` environment. 
+Use __https://auth.dev.krd__ in `dev`, `staging`, and `pre-prod` environment. 
 
-Use `https://account.id.krd` in production environment. 
+Use __https://account.id.krd__ in production environment. 
 
 #### OpenID Connect
 
@@ -513,9 +513,9 @@ For that, applications may request to search in the CAS in order to on-board use
 
 ###### URLs
 
-Use `https://api.auth.dev.krd` in `dev`, `staging`, and `pre-prod` environment. 
+Use __https://api.auth.dev.krd__ in `dev`, `staging`, and `pre-prod` environment. 
 
-Use `https://api.account.id.krd` in production environment. 
+Use __https://api.account.id.krd__ in production environment. 
 
 ###### Authentication Flow
 
