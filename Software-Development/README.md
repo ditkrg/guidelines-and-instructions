@@ -199,7 +199,7 @@ The order from which branches are merged generally takes the following form:
 
 An example:
 
-`v1.x.x` -> `dev` -> `staging` -> `staging` -> `pre-prod` -> `main`
+`v1.x.x` -> `dev` -> `staging` -> `pre-prod` -> `main`
 
 All the minor releases and patches within the same version follows the same flow. However, in the next major release, it takes the next form:
 
