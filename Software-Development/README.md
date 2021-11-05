@@ -25,9 +25,10 @@
 
 ## Change History
 
-| Version | Date            | Description | Affected Pages |
-| ------- | --------------- | ----------- | -------------- |
-| 1.0.0   | August 23, 2021 | Draft       | All            |
+| Version | Date             | Description | Affected Pages |
+| ------- | ---------------  | ----------- | -------------- |
+| 1.0.0   | August 23, 2021  | Draft       | All            |
+| 1.0.0   | November 6, 2021 | Ratified    | All            |
 
 
 
