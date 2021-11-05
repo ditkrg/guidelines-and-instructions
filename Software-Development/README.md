@@ -8,7 +8,7 @@
 | :----------------------- | ----------------------------------------------------- |
 | **File name**            | A Developer's Guide to Software Development at DIT.md |
 | **Version**              | 1.0.0                                                 |
-| **Status**               | Draft                                                 |
+| **Status**               | Ratified                                              |
 | **Initial Draft Date**   | August 23, 2021                                       |
 | **Current Version Date** | September 29, 2021                                    |
 | **Author**               | Brusk Awat Mustafa                                    |
