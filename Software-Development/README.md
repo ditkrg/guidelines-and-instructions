@@ -689,3 +689,27 @@ We expected all APIs to be documented using Swagger OpenAPI Version 3+.
       2. NPM (latest version always)
    3. Web Servers:
       Nginx (version >= 1.18)
+
+
+
+### Frontend Development Stacks
+
+#### Option #1: React
+
+1. React (Preferably bootstrapped with `create-react-app`)
+2. Programming Languages
+   1. JavaScript Programming Language ( >= ECMAScript 6) 
+   2. TypeScript Programming Language (version >= 3)
+3. Redux
+   1. Redux Toolkit (version >= 1.6)
+4. React Router (version >= 6)
+5. Material UI (latest version always)
+6. React Hook Form
+   1. Yup for Schema Validation
+7. Package Managers:
+   1. Yarn (latest version always)
+   2. NPM (latest version always)
+
+
+
+#### Option #2: Vue.js
