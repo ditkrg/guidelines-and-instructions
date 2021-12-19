@@ -704,7 +704,7 @@ We expected all APIs to be documented using Swagger OpenAPI Version 3+.
    1. Redux Toolkit (version >= 1.6)
 4. React Router (version >= 6)
 5. Material UI (latest version always)
-6. React Hook Form
+6. React Hook Form (version >= 7)
    1. Yup for Schema Validation
 7. Package Managers:
    1. Yarn (latest version always)
