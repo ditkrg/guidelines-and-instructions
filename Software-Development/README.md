@@ -164,7 +164,7 @@ Each release development must come with a time plan that is approved by the Head
 
 ### Versioning
 
-We follow the [Semantic Versioning 2.0.0](https://semver.org/) standards to version releases. Accordingly, software applications must be versioned with the following pattern: `MAJOR.MINOR.PATCH.`  
+We follow the [Semantic Versioning 2.0.0](https://semver.org/) standards to version releases. Accordingly, software applications must be versioned with the following pattern: `MAJOR.MINOR.PATCH`.
 
 #### Releases
 
