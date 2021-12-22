@@ -713,3 +713,15 @@ We expected all APIs to be documented using Swagger OpenAPI Version 3+.
 
 
 #### Option #2: Vue.js
+
+1. Vue.js (version >= 2.x) (Bootstrapped with Vue CLI)
+2. Programming Languages
+   1. JavaScript Programming Language ( >= ECMAScript 6) 
+   2. TypeScript Programming Language (version >= 3)
+3. Vuex (version >= 3.6.2)
+4. Vue Router (version >= 3.5.3)
+5. Vuetify (version >= 2.6.1)
+6. Package Managers:
+   1. Yarn (latest version always)
+   2. NPM (latest version always)
+7. vee-validate (version >= 3.4.13)
