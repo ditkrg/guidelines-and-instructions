@@ -692,6 +692,22 @@ We expected all APIs to be documented using Swagger OpenAPI Version 3+.
 
 
 
+#### Option #8 (theta): Speedy Go
+
+1. Go Programming Language
+2. Frameworks:
+   1. Gin/Gin-Gonic
+   2. Beego
+   3. Echo
+3. Relational Databases: 
+   1. MySQL (version >= 8) / Maria DB (version >= 10)
+   2. Postgresql (version >= 11)
+4. NoSQL Databases:
+   1. MongoDB (version >= 4)  or
+   2. Elasticsearch (version >= 6)
+   3. Redis (version >= 5)
+
+
 ### Frontend Development Stacks
 
 #### Option #1: React
